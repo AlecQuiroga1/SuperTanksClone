@@ -2,7 +2,7 @@
 Copyright 2021 STU Computer Science
 
 
-Class generates the first tank and the logic to movie it.
+Class generates the first tank and the logic to move it.
 */
 
 
