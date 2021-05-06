@@ -1,3 +1,17 @@
+/**
+Copyright 2021 STU Computer Science
+
+
+Class generates the first tank and the logic to movie it.
+*/
+
+
+
+/**
+ * @author Alec Quiroga, Andhy Gomez
+ *
+ */
+
 package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -5,13 +19,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-
-/**
- * @author Alec Quiroga, Andhy Gomez
- * 
- * 
- *
- */
 
 public class Tank
 {
@@ -24,7 +31,13 @@ public class Tank
 	int tankPosY = 0;
 	Rectangle tankRect;
 
+	
+	/**
+	 * 
+	 */
 	public void create() {
+		
+		// Adds the images to the textures
 		tankUp = new Texture("tankupRed.png");
 		tankRight = new Texture("tankRightRed.png");
 		tankLeft = new Texture("tankLeftRed.png");
@@ -33,17 +46,19 @@ public class Tank
 		tankRect = new Rectangle(tankPosX, tankPosY, tankUp.getWidth(), tankUp.getHeight());
 		
 	}
-	public Tank() {
-		
-	}
 	
+	
+	//Returns the tanks x position
 	public int getTankPosX() {
 		return tankPosX;
 	}
+	
+	// Returns the tanks Y position
 	public int getTankPosY() {
 		return tankPosY;
 	}
 	
+	//Updates the direction and the position of the tank depending on the key pressed.
 	public void tankUpdate() {
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			keyUp();
@@ -62,29 +77,15 @@ public class Tank
 			tankDirection = "right";
 		}	
 	}
-	public void drawTank() {
-		
-		if(tankDirection.equalsIgnoreCase("right")) {
-			batch.draw(tankRight, tankPosX, tankPosY);
-		}
-		if(tankDirection.equalsIgnoreCase("left")) {
-			batch.draw(tankLeft, tankPosX, tankPosY);
-		}
-		if(tankDirection.equalsIgnoreCase("up")) {
-			batch.draw(tankUp, tankPosX, tankPosY);
-		}
-		if(tankDirection.equalsIgnoreCase("down")) {
-			batch.draw(tankDown, tankPosX, tankPosY);
-		}
-		
-	}
-	   
 	
+	
+	// Will add or subtract pixels depending on the direction the tank is going.
 	public void keyUp() {
 		if(tankPosY <= 1005) {
 			tankPosY += 5;
 		}
 	}
+	
 	
 	public void keyDown() {
 		if(tankPosY >= 1) {

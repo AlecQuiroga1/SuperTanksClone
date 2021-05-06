@@ -1,3 +1,14 @@
+/**
+Copyright 2021 STU Computer Science
+
+Class generates the second tank and the logic to move it.
+*/
+
+/**
+ * @author Alec Quiroga, Andhy Gomez
+ *
+ */
+
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
@@ -7,27 +18,30 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Tank2 {
+	
+	// Sets the tank starting position to the top right corner.
 	int tank2PosX = 1250;
 	int tank2PosY = 900;
 	
 	SpriteBatch batch;
-	
 	String tank2Direction = "down";
-	
 	Texture tankDown, tankUp, tankLeft, tankRight;
 	Rectangle tank2rect;
 
 	public void create() {
 	
-		
+		// Initializes the textures.
 		tankUp = new Texture("tankupRed.png");
 		tankRight = new Texture("tankRightRed.png");
 		tankLeft = new Texture("tankLeftRed.png");
 		tankDown = new Texture("tankDownRed.png");
 		
+		//Generates the tank 
 		tank2rect = new Rectangle(tank2PosX, tank2PosY, tankDown.getWidth(), tankDown.getHeight());
 	}
 	
+	
+	//Updates the direction and the position of the tank depending on the key pressed.
 	public void tankUpdate() {
 		
 		if(Gdx.input.isKeyPressed(Keys.W)) {
@@ -49,23 +63,8 @@ public class Tank2 {
 	}
 	
 	
-	public void drawTank() {
-		
-		if(tank2Direction.equalsIgnoreCase("right")) {
-			batch.draw(tankRight, tank2PosX, tank2PosY);
-		}
-		if(tank2Direction.equalsIgnoreCase("left")) {
-			batch.draw(tankLeft, tank2PosX, tank2PosY);
-		}
-		if(tank2Direction.equalsIgnoreCase("up")) {
-			batch.draw(tankUp, tank2PosX, tank2PosY);
-		}
-		if(tank2Direction.equalsIgnoreCase("down")) {
-			batch.draw(tankDown, tank2PosX, tank2PosY);
-		}
-		
-	}
 
+// Will add or subtract pixels depending on the direction the tank is going.
 public void keyUp() {
 	if(tank2PosY <= 1005) {
 		tank2PosY += 5;

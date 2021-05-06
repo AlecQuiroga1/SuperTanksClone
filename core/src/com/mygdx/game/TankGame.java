@@ -1,3 +1,13 @@
+/**
+Copyright 2021 STU Computer Science
+
+Contains the logic for the game and generating the map.
+*/
+
+/**
+ * @author Alec Quiroga, Andhy Gomez
+ */
+
 package com.mygdx.game;
 
 import com.mygdx.game.bullet.Bullet;
@@ -26,6 +36,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class TankGame extends ApplicationAdapter implements InputProcessor{
+	
+	//Declaring the global variables
 	SpriteBatch batch;
 	Texture background, tankUp, tankRight, tankLeft, tankDown;
 	Rectangle tankRect;
@@ -39,18 +51,23 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 	
 	//private Socket socket;	
 	ShapeRenderer rects;
-	
-	public static String tankDirection = "up";
-
-	
 	int wallBoundsId, flagBoundsId;
 	
+	
+	// Initialize the arraylist for the two tanks bullets.
 	ArrayList<Bullet> bullets;
 	ArrayList<Bullet> tank2Bullets;
 	
+	
+	/**
+	 * Initializing the variables previously declared.
+	 * Creates any things need for the game to work properly. 
+	 */
 	@Override
 	public void create () {
 				
+		
+		// Gets the width and height of the texture.
 		float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         
@@ -58,6 +75,7 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
         camera.setToOrtho(false, w, h);
         camera.update();
         
+        // Initializes the tank asset and the map asset.
         background = new Texture("demobgv2.png");
         tankUp = new Texture("tankupRed.png");
 		tankRight = new Texture("tankRightRed.png");
@@ -73,7 +91,6 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 		map = new TmxMapLoader().load("map1v3.tmx");
         mapRender = new OrthogonalTiledMapRenderer(map);
         
-		connectSocket();
         
         getCollisionTilesFrom();
                 
@@ -87,6 +104,7 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
         
 	}
 
+	// The images are drawn within this method.
 	@Override
 	public void render () {
 		
@@ -103,10 +121,13 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 			tank2Bullets.add(new Bullet(secondTank.tank2PosX, secondTank.tank2PosY, secondTank.tank2Direction));
 		}
 		
-		// Update bullet
+		// Remove bullets list.
 		ArrayList<Bullet> removeBullets = new ArrayList<>();
 		ArrayList<Bullet> removeTank2Bullets = new ArrayList<>();
 		
+		
+		
+		// If the bullet hits something it adds it to the remove list.
 		for(Bullet bullet: bullets) {
 			bullet.update();
 			
@@ -125,28 +146,13 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 		
 		
 		
-//		int objectLayerId = 5;
-//		
-//		TiledMapTileLayer collisionObjectLayer = (TiledMapTileLayer)map.getLayers().get(objectLayerId);
-//		
-//		MapObjects walls = collisionObjectLayer.getObjects();
-//		
-//		// there are several other types, Rectangle is probably the most common one
-//		for (RectangleMapObject recs : walls.getByType(RectangleMapObject.class)) {
-//
-//		    com.badlogic.gdx.math.Rectangle rect = recs.getRectangle();
-//		    if (Intersector.overlaps(rect, player.getRectangle()) {
-//		        // collision happened
-//		    }
-//		}
-		
-		
 		// Code for tank movement
 		tank.tankUpdate();
 		secondTank.tankUpdate();
 		
 		tankRect.setLocation(tank.getTankPosX(), tank.getTankPosY());
 		
+		//Generates the map.
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -154,6 +160,8 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
         mapRender.render();
         batch.begin();
         
+        
+        // If the bullets hit a tank it adds it to the remove list.
         for(Bullet bullet: bullets) {
         	bullet.render(batch);
         	if (secondTank.tank2rect.overlaps(bullet.bulletRect)) {
@@ -173,10 +181,12 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
         	
         }
         
-        
+        // Clears the remove list.
         bullets.removeAll(removeBullets);
         tank2Bullets.removeAll(removeTank2Bullets);
         
+        
+        // Draws the tank depending on what direction it is facing.
         switch (tank.tankDirection) {
 		case "up":
 			drawTank(tankUp, tank.getTankPosX(), tank.getTankPosY());
@@ -211,15 +221,8 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
         batch.end();
 	}
 	
-	public void connectSocket() {
-		try {
-			//socket = IO.socket("https://localhost:8080");
-			//socket.connect();
-		} catch(Exception e) {
-			System.out.println(e);
-		}
-	}
 	
+	//Gives the collision tiles from the maps.
 	public void getCollisionTilesFrom() {
 		
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("walls");
@@ -246,6 +249,8 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 	
+	
+	// Draws the first tank.
 	public void drawTank(Texture texture, int tankPosX, int tankPosY) {
 		batch.draw(texture, tankPosX, tankPosY);
 	}
@@ -259,9 +264,6 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 	public void dispose () {
 		batch.dispose();
 	}
-	
-	
-
 	@Override
 	public boolean keyUp(int keycode)
 	{
