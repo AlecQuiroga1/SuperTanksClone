@@ -12,9 +12,6 @@ package com.mygdx.game;
 
 import com.mygdx.game.bullet.Bullet;
 
-//import io.socket.client.IO;
-//import io.socket.client.Socket;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -47,9 +44,7 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 	TiledMapRenderer mapRender;
 	Tank tank;
 	Tank2 secondTank;
-	
-	
-	//private Socket socket;	
+		
 	ShapeRenderer rects;
 	int wallBoundsId, flagBoundsId;
 	
@@ -67,8 +62,8 @@ public class TankGame extends ApplicationAdapter implements InputProcessor{
 	public void create () {
 				
 		
-		// Gets the width and height of the texture.
-		float w = Gdx.graphics.getWidth();
+	// Gets the width and height of the texture.
+	float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         
         camera = new OrthographicCamera();
